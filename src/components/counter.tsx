@@ -10,8 +10,32 @@ const initialState: InitialState = {
   draftCount: 0,
 };
 
-const reducer = (state = initialState, action: any) => {
+type Action = {
+  type: 'increment' | 'decrement' | 'reset' | 'updateCountFromDraft';
+};
+
+type ActionWithPayload = {
+  type: 'updateDraftCount';
+  payload: number;
+};
+
+const reducer = (state = initialState, action: Action | ActionWithPayload) => {
   const { count, draftCount } = state;
+
+  //  switch (action.type) {
+  //   case 'increment':
+  //     return state;
+  //   case 'decrement':
+  //     return state;
+  //   case 'reset':
+  //     return state;
+  //   case 'updateCountFromDraft':
+  //     return state;
+  //   case 'updateDraftCount':
+  //     return state;
+  //   default:
+  //     return state;
+  // }
 
   if (action.type === 'increment') {
     const newCount = count + 1;
@@ -41,25 +65,28 @@ const reducer = (state = initialState, action: any) => {
 };
 
 const Counter = () => {
-  const [count, dispatch] = useReducer(reducer, initialState);
-  const [dreaftCount, setDraftCount] = useState(count);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <section className="flex w-2/3 flex-col items-center gap-8 border-4 border-primary-500 bg-white p-8 shadow-lg">
       <h1>Days Since the Last Accident</h1>
-      <p className="text-6xl">0</p>
+      <p className="text-6xl">{state.count}</p>
       <div className="flex gap-2">
         <button onClick={() => dispatch({ type: 'decrement' })}>
           ➖ Decrement
         </button>
-        <button>🔁 Reset</button>
+        <button onClick={() => dispatch({ type: 'reset' })}>🔁 Reset</button>
         <button onClick={() => dispatch({ type: 'decrement' })}>
           ➕ Increment
         </button>
       </div>
       <div>
-        <form onSubmit={(e) => e.preventDefault()}>
-          <input type="number" value={0} />
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <input type="number" value={state.draftCount} />
           <button type="submit">Update Counter</button>
         </form>
       </div>
