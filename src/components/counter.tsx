@@ -41,7 +41,7 @@ const reducer = (state = initialState, action: any) => {
 };
 
 const Counter = () => {
-  const [count, setCount] = useReducer(reducer, initialState);
+  const [count, dispatch] = useReducer(reducer, initialState);
   const [dreaftCount, setDraftCount] = useState(count);
 
   return (
@@ -49,9 +49,13 @@ const Counter = () => {
       <h1>Days Since the Last Accident</h1>
       <p className="text-6xl">0</p>
       <div className="flex gap-2">
-        <button>➖ Decrement</button>
+        <button onClick={() => dispatch({ type: 'decrement' })}>
+          ➖ Decrement
+        </button>
         <button>🔁 Reset</button>
-        <button>➕ Increment</button>
+        <button onClick={() => dispatch({ type: 'decrement' })}>
+          ➕ Increment
+        </button>
       </div>
       <div>
         <form onSubmit={(e) => e.preventDefault()}>
