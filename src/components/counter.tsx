@@ -1,6 +1,51 @@
+import { useState, useReducer, Dispatch } from 'react';
+
+type InitialState = {
+  count: number;
+  draftCount: string | number;
+};
+
+const initialState: InitialState = {
+  count: 0,
+  draftCount: 0,
+};
+
+const reducer = (state = initialState, action: any) => {
+  const { count, draftCount } = state;
+
+  if (action.type === 'increment') {
+    const newCount = count + 1;
+    return { count: newCount, draftCount: newCount };
+  }
+
+  if (action.type === 'decrement') {
+    const newCount = count - 1;
+    return { count: newCount, draftCount: newCount };
+  }
+
+  if (action.type === 'reset') {
+    return { count: 0, draftCount: 0 };
+  }
+
+  if (action.type === 'updateDraftCount') {
+    console.log('updateDraftCount');
+
+    return { count, draftCount: action.payload };
+  }
+
+  if (action.type === 'updateCountFromDraft') {
+    return { count: Number(draftCount), draftCount };
+  }
+
+  return state;
+};
+
 const Counter = () => {
+  const [count, setCount] = useReducer(reducer, initialState);
+  const [dreaftCount, setDraftCount] = useState(count);
+
   return (
-    <section className="flex flex-col items-center w-2/3 gap-8 p-8 bg-white border-4 shadow-lg border-primary-500">
+    <section className="flex w-2/3 flex-col items-center gap-8 border-4 border-primary-500 bg-white p-8 shadow-lg">
       <h1>Days Since the Last Accident</h1>
       <p className="text-6xl">0</p>
       <div className="flex gap-2">
